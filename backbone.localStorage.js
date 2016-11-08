@@ -241,7 +241,10 @@ Backbone.ajaxSync = Backbone.sync;
 Backbone.getSyncMethod = function(model, options) {
   var forceAjaxSync = options && options.ajaxSync;
 
-  if(!forceAjaxSync && (result(model, 'localStorage') || result(model.collection, 'localStorage'))) {
+  // We are using a custom localStorage flag on several places so we need to keep
+  // the options in order to not break anything while we are moving to webpack
+  // and this new version
+  if((options || {}).localStorage !== false && !forceAjaxSync && (result(model, 'localStorage') || result(model.collection, 'localStorage'))) {
     return Backbone.localSync;
   }
 
